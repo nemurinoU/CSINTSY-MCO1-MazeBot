@@ -12,12 +12,13 @@ Author(s):  Martinez, Francis Benedict V.
             Encinas, Robert
             Rejano, Martin
             
-Version:    0.0.1
+Version:    TK-0.0.1 CONTROL TEST
 Date:       2023-02-10
 """
 from tkinter import *
-import turtle
-
+from random import randint
+import time
+import threading
 
 """
 ################################
@@ -46,64 +47,32 @@ Our code is currently using PythonTurtle libraries to
 draw graphics. I might want to change this in the future
 to just using multithreaded TK.
 """
-# Declare 'constant' dimensions for tiles
-SIDE = 100
 
-# Declaration of turtle drawer and screen object
-t = turtle.Turtle ()
-win = turtle.Screen ()
+root = Tk ()
 
-# set turtle position to home and speed to slowest
-# win.tracer () actually stops the animation so that
-# the animation seems instantaneous
-t.home ()
-t.speed (0)
-win.tracer (0)
+root.title ("A-Maze-ing Bot")
+root.geometry ("1366x768")
 
-"""
-tile()
-This sub-routine method is responsible for 
-drawing a square using the turtle.
+def five_secs ():
+    time.sleep (5)
+    my_label.config (text = "5 seconds have passed. WRYYY")
 
-    @param      None
-    @return     void
-"""
-def tile ():
-    for i in range (4):
-        t.forward (SIDE)
-        t.right (90)
-    t.forward (SIDE)
-# === END OF METHOD
+def rando ():
+    random_label.config (text = f'Random Number: {randint(1, 100)}')
 
-"""
-This nested loop repeatedly calls
-drawer method tile() depending
-on the size of the board.
+my_label = Label (root, text = "Hello there!")
+my_label.pack (pady = 20)
 
-Currently: 8x8, standard chessboard
-"""
-for i in range (8):
-    t.penup ()
-    t.goto (0, SIDE * i)	
-    t.pendown ()
-    
-    # Changes the color of the tile based on its 
-    for j in range (8):
-        if (j + i) % 2 == 0:
-            color = 'black'
-        else:
-            color = 'white'
-       
-        t.fillcolor (color)
-        t.begin_fill ()   
-        tile ()
-        t.end_fill ()
-# === END OF LOOP
+my_button1 = Button (root, text = "5 seconds", command=threading.Thread(target=five_secs).start())
+my_button1.pack (pady = 20)
 
-# hide the cursor, update the graphics, close pointer
-t.hideturtle ()
-win.update ()
-turtle.done ()
+my_button2 = Button (root, text="Pick Random Number", command=rando)
+my_button2.pack (pady = 20)
+
+random_label = Label (root, text = '')
+random_label.pack (pady = 20)
+
+root.mainloop ()
 
 """
 ################################
@@ -132,7 +101,7 @@ with open ("Test Cases/tc1.txt", "r+") as file:
             mat.append (line.strip())
 
 # confirm proper feeding of input
-print ("n =", n)
+print (f"n = {n}")
 for i in mat:
     print (i)
 """
