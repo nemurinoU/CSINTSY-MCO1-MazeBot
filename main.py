@@ -71,7 +71,7 @@ drawing a square using the turtle.
 def tile ():
     for i in range (4):
         t.forward (SIDE)
-        t.right (90) #hiiii martin's crush is...
+        t.right (90) #hiiii martin's crush is... shut up yna
     t.forward (SIDE)
 # === END OF METHOD
 
