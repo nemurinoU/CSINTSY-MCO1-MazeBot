@@ -19,7 +19,7 @@ from tkinter import *
 from random import randint
 import time
 import threading
-
+import tkinter.messagebox
 """
 ################################
 !!! BEGINNING OF GRAPHICS CODE
