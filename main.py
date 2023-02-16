@@ -60,6 +60,7 @@ def five_secs ():
 def rando ():
     random_label.config (text = f'Random Number: {randint(1, 100)}')
 
+
 my_label = Label (root, text = "Hello there!")
 my_label.pack (pady = 20)
 
