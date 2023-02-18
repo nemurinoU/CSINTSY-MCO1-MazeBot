@@ -2,7 +2,14 @@ from enum import Enum
 import math
 
 class Graph:
-    vertices = {}
+    def __init__ (self, val, start, end):
+        self.data = val
+        #dict where the key is the Node and the value is the heuristic score
+        self.vertices = {}
+        #starting node
+        self.start = start
+        #ending node
+        self.end = end
     
     def add_vertex (self, v):
         if isinstance(v, Node) and v.data not in self.vertices:
@@ -76,7 +83,7 @@ class Edge:
 
     def getCost (self):
         for line in self.lines:
-            self.cost += math.abs(line.start[0] - line.end[0]) + math.abs(line.start[1] - line.end[1]) 
+            self.cost += math.abs(line.start.x - line.end.x) + math.abs(line.start.y - line.end.y) 
 
 #The dot that traverses the graph
 class Pointer:
