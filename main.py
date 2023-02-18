@@ -17,6 +17,8 @@ Date:       2023-02-10
 """
 from tkinter import *
 from random import randint
+#import graph
+
 import time
 import threading
 import tkinter.messagebox
@@ -64,7 +66,7 @@ def rando ():
 my_label = Label (root, text = "Hello there!")
 my_label.pack (pady = 20)
 
-my_button1 = Button (root, text = "5 seconds", command=threading.Thread(target=five_secs).start())
+my_button1 = Button (root, text = "5 seconds", command=(threading.Thread(target=five_secs).start))
 my_button1.pack (pady = 20)
 
 my_button2 = Button (root, text="Pick Random Number", command=rando)
@@ -90,21 +92,30 @@ root.mainloop ()
 ################################
 """
 
-# mat is for representation of the maze
+def print_text_grid (grid, n):
+    print (f"n = {n}")
+    for i in grid:
+        print (i)
+
+# grid is for representation of the maze
 # n is the dimension of one side of mat
-mat, n = [], -1
+grid, n = [], -1
 
 with open ("Test Cases/tc1.txt", "r+") as file:
     for line in file:
         if n == -1:
             n = int (line.strip())
         else:
-            mat.append (line.strip())
+            grid.append (line.strip())
 
 # confirm proper feeding of input
-print (f"n = {n}")
-for i in mat:
-    print (i)
+print_text_grid (grid, n)
+
+# translate the grid to a graph
+maze = Graph()
+
+
+
 """
 ################################
 !!! END OF FILE INPUT CODE
