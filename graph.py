@@ -36,17 +36,16 @@ class Graph:
 class NodeType (Enum):
     START = 0
     TERMINAL = 1
-    REGULAR = 2
+    EDGE_NODE = 2
+    JUNCTION = 3
 
 class Coordinate:
-    def __init__ (self, val, x, y):
-        self.data = val
+    def __init__ (self, x, y):
         self.x = x
         self.y = y
 
 class Node:
-    def __init__ (self, val, id, position, nodeType):
-        self.data = val
+    def __init__ (self, id, position, nodeType):
         #self.id refers to the numerical code (index) of the node in the adjacency matrix
         self.id = id
         #self.position is the Coordinate of the Node
@@ -61,16 +60,14 @@ class Node:
             self.connections.append (edge)
 
 class Line:
-    def __init__ (self, val, start, end):
-        self.data = val
+    def __init__ (self, start, end):
         #self.start is the Coordinate of the starting point of the line
         self.start = start
         #self.end is the Coordinate of the ending point of the line
         self.end = end
 
 class Edge:
-    def __init__ (self, val, nodes):
-        self.data = val
+    def __init__ (self, nodes):
         #self.nodes is a 2 element array of the 2 Nodes that the edge joins together
         self.nodes = nodes
         #self.lines is the array of lines that makes up the edge (Note: Lines must be in correct traversal order)
