@@ -1,4 +1,5 @@
 import math
+from graph import *
 
 def heuristicFunction(node, end):
     h_value = math.abs(node.position.x - end.position.x) + math.abs(node.position.y - end.position.y)
