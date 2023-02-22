@@ -16,25 +16,22 @@ Version:    TK-0.0.1 CONTROL TEST
 Date:       2023-02-10
 """
 from tkinter import *
-from random import randint
-#import graph
+from graphics import Graphics
 
 import time
 import threading
 import tkinter.messagebox
-"""
-################################
-!!! BEGINNING OF GRAPHICS CODE
-################################
+import fileHandler
 
+
+"""
 ===== TO DO !!!!
 In the future, I think it would be ideal if
 graphics were done in another .py file.
 
-!!!! NOTE: Install turtle library with this command w/o quotes
+!!!! NOTE: Install tkinter library with this command w/o quotes
 
 FOR LINUX DISTROS/UBUNTU:
-`pip install PythonTurtle`
 `pip install tk`
 `sudo apt-get install python3-tk
 
@@ -43,83 +40,46 @@ Just do the pip stuff above,
 but if it doesn't work, try this.
 
 https://tkdocs.com/tutorial/install.html#installwin
-
-===== ADDENDUM !!!!
-Our code is currently using PythonTurtle libraries to
-draw graphics. I might want to change this in the future
-to just using multithreaded TK.
 """
 
-root = Tk ()
+def start():
+    print ("Do A*")
 
-root.title ("A-Maze-ing Bot")
-root.geometry ("1366x768")
+if __name__ == '__main__':
+    # Storing the GRID and the dimensions
+    # @ grid is for representation of the maze
+    # @ n is the dimension of one side of mat
+    grid, n = fileHandler.load_file("Test Cases/tc1.txt")
 
-def five_secs ():
-    time.sleep (5)
-    my_label.config (text = "5 seconds have passed. WRYYY")
+    # @ tileSize    -> the size of each tile
+    # @ dims        -> the length of a window side (1:1 aspect ratio)
+    tileSize = 300 / n
+    dims = n * tileSize
 
-def rando ():
-    random_label.config (text = f'Random Number: {randint(1, 100)}')
+    # Initializing GUI using TKinter
+    # I'm not qualified enough to explain what it does under the hood, just know we call the window using this
+    root = Tk ()
+    
+    # Set the window title
+    root.title ("A*-Maze-ing Bot")
 
+    # Initialize a drawable canvas
+    myCanvas = tkinter.Canvas (root, bg="grey", height = dims, width = dims)
+    myCanvas.pack ()
+    
+    # initalize Graphics class
+    # and begin drawing the grid
+    gfx = Graphics (tileSize, myCanvas)
+    gfx.makeTiles (n, grid)
 
-my_label = Label (root, text = "Hello there!")
-my_label.pack (pady = 20)
+    # Threading
+    main_thread = threading.Thread (target=start)
+    main_thread.daemon = True
+    main_thread.start ()
+    
+    root.mainloop ()
 
-my_button1 = Button (root, text = "5 seconds", command=(threading.Thread(target=five_secs).start))
-my_button1.pack (pady = 20)
+    
 
-my_button2 = Button (root, text="Pick Random Number", command=rando)
-my_button2.pack (pady = 20)
-
-random_label = Label (root, text = '')
-random_label.pack (pady = 20)
-
-root.mainloop ()
-
-"""
-################################
-!!! END OF GRAPHICS CODE
-################################
-"""
-
-
-
-
-"""
-################################
-!!! BEGINNING OF FILE INPUT CODE
-################################
-"""
-
-def print_text_grid (grid, n):
-    print (f"n = {n}")
-    for i in grid:
-        print (i)
-
-# grid is for representation of the maze
-# n is the dimension of one side of mat
-grid, n = [], -1
-
-with open ("Test Cases/tc1.txt", "r+") as file:
-    for line in file:
-        if n == -1:
-            n = int (line.strip())
-        else:
-            grid.append (line.strip())
-
-# confirm proper feeding of input
-print_text_grid (grid, n)
-
-# translate the grid to a graph
-maze = Graph()
-
-
-
-"""
-################################
-!!! END OF FILE INPUT CODE
-################################
-"""
 
 
