@@ -1,5 +1,45 @@
 from graph import *
 
+def hasTurn(line, next):
+    if line.start.x - next.x != 0 and line.start.y - next.y != 0:
+        return True
+    else:
+        return False
+
+def defineEdges(junctionList, nodeGrid):
+    edges = []
+    currentLine = None
+
+    for j in junctionList:
+        for coord in j.adjacents:
+            currentEdge = Edge()
+            currentEdge.nodes[0] = nodeGrid[coord.x][coord.y]
+            currentLine = Line(coord, coord)
+            previous = coord
+            
+            end = False
+            while not end:
+                if nodeGrid[previous.x][previous.y].adjacents[0] == previous:
+                    next = nodeGrid[previous.x][previous.y].adjacents[0]
+                else:
+                    next = nodeGrid[previous.x][previous.y].adjacents[1]
+
+                if nodeGrid[next.x][next.y].type == NodeType.JUNCTION:
+                    currentEdge.nodes[1] = nodeGrid[next.x][next.y]
+                    end = True
+                else:
+                    if hasTurn(currentLine, next):
+                        currentEdge.addLines(currentLine)
+                        currentLine = Line(next, next)
+                    else:
+                        currentLine.end = next
+
+                    previous = next
+
+            edges.append(currentEdge)
+    
+    return edges
+
 #The grid to graph parser transforms the grid to a graph representation 
 def gridToGraph(n, grid):
     currId = 1
@@ -43,5 +83,6 @@ def gridToGraph(n, grid):
                     nodeGrid[x][y].type = NodeType.JUNCTION
                     junctionList.append(nodeGrid[x][y])
                     currId += 1
-
+    
+    edges = defineEdges(junctionList, nodeGrid)
             
