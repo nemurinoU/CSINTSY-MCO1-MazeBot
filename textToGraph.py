@@ -1,5 +1,5 @@
 from graph import *
-
+        
 #The grid to graph parser transforms the grid to a graph representation 
 def gridToGraph(n, grid, graph):
     verticalLines = []
@@ -24,40 +24,30 @@ def gridToGraph(n, grid, graph):
                 currentVerticalLine = None
 
             #Process node
-            counter = 0
             if currNode != None:
                 #Check up
                 if y - 1 > 0:
                     if grid[y - 1][x] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(x, y - 1))
                 
                 #Check down
                 if y + 1 < n:
                     if grid[y + 1][x] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(x, y + 1))
 
                 #Check left
                 if x - 1 > 0:
                     if grid[y][x - 1] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(x - 1, y))
                 
                 #Check down
                 if x + 1 < n:
                     if grid[y][x + 1] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(x + 1, y))
                 
-                if counter == 1 or counter > 2:
+                if currNode.adjacents.count == 1 or currNode.adjacents.count > 2:
                     currNode.id = currId
                     currNode.type = NodeType.JUNCTION
-
-                    if currentVerticalLine != None:
-                        verticalLines.append(currentVerticalLine)
-                        currentVerticalLine = None
-                else:
-                    if currentVerticalLine == None:
-                        currentVerticalLine = Line(Coordinate(x, y), Coordinate(x, y))
-                    else:
-                        currentVerticalLine.end = Coordinate(x, y)
 
                 currNode = None
 
@@ -79,35 +69,26 @@ def gridToGraph(n, grid, graph):
                 #Check up
                 if x - 1 > 0:
                     if grid[x - 1][y] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(y, x - 1))
                 
                 #Check down
                 if x + 1 < n:
                     if grid[x + 1][y] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(y, x + 1))
 
                 #Check left
                 if y - 1 > 0:
                     if grid[x][y - 1] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(y - 1, x))
                 
                 #Check down
                 if y + 1 < n:
                     if grid[x][y + 1] == " ":
-                        counter += 1
+                        currNode.adjacents.append(Coordinate(y + 1, x))
                 
-                if counter == 1 or counter > 2:
+                if currNode.adjacents.count == 1 or currNode.adjacents.count > 2:
                     currNode.id = currId
                     currNode.type = NodeType.JUNCTION
-
-                    if currentHorizontalLine != None:
-                        horizontalLines.append(currentHorizontalLine)
-                        currentHorizontalLine = None
-                else:
-                    if currentHorizontalLine == None:
-                        currentHorizontalLine = Line(Coordinate(y, x), Coordinate(y, x))
-                    else:
-                        currentHorizontalLine.end = Coordinate(y, x)
 
                 currNode = None
                  
