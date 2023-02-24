@@ -6,6 +6,8 @@ class Graph:
         self.data = val
         #dict where the key is the Node and the value is the heuristic score
         self.vertices = {}
+        #set of vertices
+        self.vertexSet = {}
         #starting node
         self.start = start
         #ending node
@@ -52,6 +54,8 @@ class Node:
         self.position = position
         #self.connections would be an array of Edges
         self.connections = [] 
+        #self.adjacents would be an array of Coordinates
+        self.adjacents = []
         #self.type identifies if the node is the starting node, ending node, or just a regular node
         self.type = nodeType
         
