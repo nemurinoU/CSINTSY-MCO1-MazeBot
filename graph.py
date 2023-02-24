@@ -71,9 +71,9 @@ class Line:
         self.end = end
 
 class Edge:
-    def __init__ (self, nodes):
+    def __init__ (self):
         #self.nodes is a 2 element array of the 2 Nodes that the edge joins together
-        self.nodes = nodes
+        self.nodes = []
         #self.lines is the array of lines that makes up the edge (Note: Lines must be in correct traversal order)
         self.lines = []
         #self.cost is the cost to traverse this Edge
