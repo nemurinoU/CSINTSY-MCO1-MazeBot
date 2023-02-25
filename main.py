@@ -25,6 +25,7 @@ import tkinter.messagebox
 import fileHandler
 import mapper
 import math
+import textToGraph
 
 
 """
@@ -133,7 +134,8 @@ if __name__ == '__main__':
     # Storing the GRID and the dimensions
     # @ grid is for representation of the maze
     # @ n is the dimension of one side of mat
-    grid, n = fileHandler.load_file("Test Cases/12x12.txt")
+    grid, n = fileHandler.load_file("Test Cases/tc1.txt")
+    maze = textToGraph.gridToGraph (n, grid)
 
     # @ tileSize    -> the size of each tile
     # @ dims        -> the length of a window side (1:1 aspect ratio)

@@ -111,5 +111,17 @@ def gridToGraph(n, grid):
 
     g = Graph(edges, junctionList, start, end)
     determineHeuristicValues(g)
-
+    
+    for k,v in g.vertices.items():
+        print(f"Junction: ({k.position.x}, {k.position.y})")
+        print("Edges: ")
+        i = 1
+        for e in k.connections:
+            print(f"Edge {i}")
+            print(f"  Connects ({e.nodes[0].position.x}, {e.nodes[0].position.y}) to ({e.nodes[1].position.x}, {e.nodes[1].position.y})")
+            print(f"  Cost: {e.cost}")
+            i += 1
+        print(f"Heuristic Score: {v}")
+        print("---------------------------------------------------------------------")
+        
     return g
