@@ -30,7 +30,7 @@ class Graphics:
         :return:            None
         :rtype:             void
         """
-        colors = {'.':'White','G':'Magenta','S':'Orange','#':'Black'}
+        colors = {'.':'Grey','G':'Magenta','S':'Orange','#':'Black'}
         
         for row in range (n):
             for col in range (n):
