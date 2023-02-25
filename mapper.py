@@ -19,6 +19,7 @@ Date:       2023-02-22
 """
 
 def isEdge (coord, n):
+    # this function basically tells us if a cell is by the edge
     x, y = coord
     res = False
     
@@ -31,6 +32,21 @@ def isEdge (coord, n):
     return res
 
 def direction_map (grid, n):
+    """
+        When called, it generates a dictionary of every non-wall tile and the
+        status of their adjacent tiles (explorable or not).
+        
+        You don't have to understand this... It's better that way...
+
+        :param  n:          Describes the dimension of a grid
+        :param  grid:       Matrix containing the grid
+        
+        :type   n:          int
+        :type   grid:       int[][]
+        
+        :return:            temp, containing all the non-wall coordinates and their adjacent spaces status
+        :rtype:             dict
+    """
     temp = dict ()
     curr = ()
     
@@ -68,6 +84,20 @@ def direction_map (grid, n):
     return temp
 
 def euclid_map (grid, n):
+    """
+    When called, it generates a dictionary of every non-wall tile in euclidean space
+    
+    You don't have to understand this... It's better that way...
+
+    :param  n:          Describes the dimension of a grid
+    :param  grid:       Matrix containing the grid
+    
+    :type   n:          int
+    :type   grid:       int[][]
+    
+    :return:            start, goal, temp, containing all the non-wall coordinates
+    :rtype:             tuple, tuple, list
+    """
     temp = []
     s, g = (), ()
     
