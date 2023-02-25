@@ -51,7 +51,14 @@ def heuristic (state, end):
     
     # calculate manhattan distance from the state to the goal
     return abs (x1 - x2) + abs (y1 - y2)
-    #return math.sqrt (pow (x2-x1, 2) + pow (y2-y1, 2))
+    
+
+def heuristic_two (state, end):
+    x1, y1 = state
+    x2, y2 = end
+    
+    # euclidean distance
+    return int(math.sqrt (pow (x2-x1, 2) + pow (y2-y1, 2)) // 1) 
 
 def astar (grid, n):
     # initialize the queue that will store
@@ -71,9 +78,9 @@ def astar (grid, n):
     
     # f(n) is the total cost
     f_cost = {cell : float ('inf') for cell in coords}
-    f_cost [start] = heuristic (start, goal)
+    f_cost [start] = heuristic (start, goal) + heuristic_two (start, goal)
     
-    pq.enqueue ((f_cost[start], heuristic (start, goal), start))
+    pq.enqueue ((f_cost[start], heuristic (start, goal) + heuristic_two (start, goal), start))
     
     while not pq.isEmpty():
         current_cell = pq.pop ()[2]
@@ -93,7 +100,7 @@ def astar (grid, n):
                     child = (current_cell[0] + 1, current_cell[1])
                 
                 temp_g_cost = g_cost[current_cell] + 1
-                temp_f_cost = temp_g_cost + heuristic (child, goal)
+                temp_f_cost = temp_g_cost + heuristic (child, goal) + heuristic_two (child, goal)
                 
                 if temp_f_cost < f_cost[child]:
                     g_cost[child] = temp_g_cost
@@ -120,17 +127,17 @@ def astar (grid, n):
     
     #print ("aPath", aPath)
     
-    return visited, aPath, start, goal, success
+    return visited, aPath, start, goal, success, g_cost, f_cost
     
 if __name__ == '__main__':
     # Storing the GRID and the dimensions
     # @ grid is for representation of the maze
     # @ n is the dimension of one side of mat
-    grid, n = fileHandler.load_file("Test Cases/20x20.txt")
+    grid, n = fileHandler.load_file("Test Cases/12x12.txt")
 
     # @ tileSize    -> the size of each tile
     # @ dims        -> the length of a window side (1:1 aspect ratio)
-    tileSize = 600 / n
+    tileSize = 900 // n
     dims = n * tileSize
 
     # Initializing GUI using TKinter
@@ -148,24 +155,26 @@ if __name__ == '__main__':
     # and begin drawing the grid
     gfx = Graphics (tileSize, myCanvas)
     gfx.makeTiles (n, grid)
-
+    
     def start ():
         visited, aPath = dict (), dict ()
         
         print ("Do A* w/ Manhattan Distance Heuristic")
-        visited, aPath, s, g, succ = astar (grid, n)
+        visited, aPath, s, g, succ, actualC, totalC = astar (grid, n)
         
-        speed = n / (n * 10 * len(str(n)))
+        speed = n / (n * 1000 * len(str(n)))
         
         for i in visited:
             if i != s and i != g:
                 time.sleep (speed)
                 gfx.drawTile (i[0], i[1], "red")
+                gfx.canvas.create_text (i[1] * tileSize + tileSize // 2, i[0] * tileSize + tileSize // 2, text=f"{totalC[i]}", font=('Impact', -tileSize + 5), fill="white")
 
         for i in reversed (aPath):
             if i != s and i != g:
                 time.sleep (speed)
                 gfx.drawTile (i[0], i[1], "green")
+                gfx.canvas.create_text (i[1] * tileSize + tileSize // 2, i[0] * tileSize + tileSize // 2, text=f"{totalC[i]}", font=('Impact', -tileSize + 5), fill="white")
         
         succ = "Path found!" if succ else "Cannot reach goal!"
         message = f"Nodes Visited: {len (visited) + 1}\nShortest Path: {len (aPath)}"
