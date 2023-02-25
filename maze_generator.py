@@ -9,9 +9,6 @@ LIMITATIONS:
 Can't add S or G...
 
 Author(s):  Martinez, Francis Benedict V.
-            Jawali, Armina
-            Encinas, Robert
-            Rejano, Martin
             
 Version:    0.0.1
 Date:       2023-02-22

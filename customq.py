@@ -1,3 +1,13 @@
+"""
+customq.py
+
+Really, it's just a self implementation of a Queue.
+
+Author(s):  Martinez, Francis Benedict V.
+            
+Version:    0.0.1
+Date:       2023-02-22
+"""
 class PriorityQueue(object):
     def __init__(self):
         self.queue = []
