@@ -23,6 +23,7 @@ class NodeType (Enum):
     EDGE_NODE = 2
     JUNCTION = 3
     WALL = 4
+    DEAD_END = 5
 
 class Coordinate:
     def __init__ (self, x, y):

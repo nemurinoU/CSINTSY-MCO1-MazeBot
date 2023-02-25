@@ -20,8 +20,12 @@ def defineEdges(junctionList, nodeGrid):
             currentEdge.nodes[0] = nodeGrid[previous.x][previous.y]
             
             end = False
+            deadEnd = False
             while not end:
                 if nodeGrid[next.x][next.y].type != NodeType.EDGE_NODE:
+                    if nodeGrid[next.x][next.y].type == NodeType.DEAD_END:
+                        deadEnd = True
+
                     currentEdge.nodes[1] = nodeGrid[next.x][next.y]
                     currentEdge.addLines(currentLine)
                     end = True
@@ -43,9 +47,10 @@ def defineEdges(junctionList, nodeGrid):
                         previous = next
                         next = nodeGrid[next.x][next.y].adjacents[0]
             
-            currentEdge.getCost()
-            j.connections.append(currentEdge)
-            edges.append(currentEdge)
+            if not deadEnd:
+                currentEdge.getCost()
+                j.connections.append(currentEdge)
+                edges.append(currentEdge)
 
     return edges
 
@@ -91,7 +96,7 @@ def gridToGraph(n, grid):
                     if grid[x + 1][y] != "#":
                         nodeGrid[x][y].adjacents.append(Coordinate(x + 1, y))
                 
-                if len(nodeGrid[x][y].adjacents) == 1 or len(nodeGrid[x][y].adjacents) > 2 or nodeGrid[x][y].type == NodeType.START or nodeGrid[x][y].type == NodeType.TERMINAL:
+                if len(nodeGrid[x][y].adjacents) > 2 or nodeGrid[x][y].type == NodeType.START or nodeGrid[x][y].type == NodeType.TERMINAL:
                     nodeGrid[x][y].id = currId
 
                     if nodeGrid[x][y].type == NodeType.EDGE_NODE:
@@ -99,6 +104,8 @@ def gridToGraph(n, grid):
 
                     junctionList.append(nodeGrid[x][y])
                     currId += 1
+                elif len(nodeGrid[x][y].adjacents) == 1:
+                    nodeGrid[x][y].type = NodeType.DEAD_END
 
     edges = defineEdges(junctionList, nodeGrid)
 
