@@ -188,7 +188,7 @@ def astar (grid, n):
                 if temp_f_cost < f_cost[child]:
                     g_cost[child] = temp_g_cost
                     f_cost[child] = temp_f_cost
-                    pq.enqueue ((temp_f_cost, heuristic (child, goal), child))
+                    pq.enqueue ((temp_f_cost, heuristic (child, goal) + heuristic_two (child, goal), child))
                     visited[child] = current_cell
     
     # declare the optimal path (aPath)
@@ -288,7 +288,7 @@ if __name__ == '__main__':
         """
         visited, aPath = dict (), dict ()
         
-        print ("Do A* w/ Manhattan Distance Heuristic")
+        print ("Do A* w/ Manhattan and Euclidean Distance Heuristic")
         
         # @visited, aPath are the path node tables
         # @start, goal is just the beginning nodes and end nodes
