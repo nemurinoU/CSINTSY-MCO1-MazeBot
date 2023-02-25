@@ -1,5 +1,4 @@
 from enum import Enum
-import math
 
 class Graph:
     def __init__ (self, edges, vertexSet, start, end):
@@ -23,6 +22,7 @@ class NodeType (Enum):
     TERMINAL = 1
     EDGE_NODE = 2
     JUNCTION = 3
+    WALL = 4
 
 class Coordinate:
     def __init__ (self, x, y):
@@ -56,7 +56,7 @@ class Line:
 class Edge:
     def __init__ (self):
         #self.nodes is a 2 element array of the 2 Nodes that the edge joins together
-        self.nodes = []
+        self.nodes = [-1, -1]
         #self.lines is the array of lines that makes up the edge (Note: Lines must be in correct traversal order)
         self.lines = []
         #self.cost is the cost to traverse this Edge
@@ -67,7 +67,9 @@ class Edge:
 
     def getCost (self):
         for line in self.lines:
-            self.cost += math.abs(line.start.x - line.end.x) + math.abs(line.start.y - line.end.y) 
+            self.cost += abs(line.start.x - line.end.x) + abs(line.start.y - line.end.y)
+            self.cost += 1
+        self.cost += 1
 
 #The dot that traverses the graph
 class Pointer:

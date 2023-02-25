@@ -14,19 +14,16 @@ def defineEdges(junctionList, nodeGrid):
     for j in junctionList:
         for coord in j.adjacents:
             currentEdge = Edge()
-            currentEdge.nodes[0] = nodeGrid[coord.x][coord.y]
             currentLine = Line(coord, coord)
-            previous = coord
+            previous = j.position
+            next = coord
+            currentEdge.nodes[0] = nodeGrid[previous.x][previous.y]
             
             end = False
             while not end:
-                if nodeGrid[previous.x][previous.y].adjacents[0] == previous:
-                    next = nodeGrid[previous.x][previous.y].adjacents[0]
-                else:
-                    next = nodeGrid[previous.x][previous.y].adjacents[1]
-
-                if nodeGrid[next.x][next.y].type == NodeType.JUNCTION:
+                if nodeGrid[next.x][next.y].type != NodeType.EDGE_NODE:
                     currentEdge.nodes[1] = nodeGrid[next.x][next.y]
+                    currentEdge.addLines(currentLine)
                     end = True
                 else:
                     if hasTurn(currentLine, next):
@@ -35,10 +32,21 @@ def defineEdges(junctionList, nodeGrid):
                     else:
                         currentLine.end = next
 
-                    previous = next
-
+                if not end:
+                    if len(nodeGrid[next.x][next.y].adjacents) == 1:
+                        previous = next
+                        next = nodeGrid[next.x][next.y].adjacents[0]
+                    elif nodeGrid[next.x][next.y].adjacents[0].x == previous.x and nodeGrid[next.x][next.y].adjacents[0].y == previous.y:
+                        previous = next
+                        next = nodeGrid[next.x][next.y].adjacents[1]
+                    else:
+                        previous = next
+                        next = nodeGrid[next.x][next.y].adjacents[0]
+            
+            currentEdge.getCost()
+            j.connections.append(currentEdge)
             edges.append(currentEdge)
-    
+
     return edges
 
 #The grid to graph parser transforms the grid to a graph representation 
@@ -50,43 +58,48 @@ def gridToGraph(n, grid):
     for x in range(n):
         nodeGrid.append([])
         for y in range(n):
-            if grid[y][x] == "S":
-                nodeGrid[y].append(Node(0, Coordinate(x, y), NodeType.START))
-                start = nodeGrid[y][x]
-            elif grid[y][x] == "E":
-                nodeGrid[y].append(Node(-1, Coordinate(x, y), NodeType.TERMINAL))
-                end = nodeGrid[y][x]
-            elif grid[y][x] == " ":
-                nodeGrid[y].append(Node(-10, Coordinate(x, y), NodeType.EDGE_NODE))
+            if grid[x][y] == "S":
+                nodeGrid[x].append(Node(0, Coordinate(x, y), NodeType.START))
+                start = nodeGrid[x][y]
+            elif grid[x][y] == "G":
+                nodeGrid[x].append(Node(-1, Coordinate(x, y), NodeType.TERMINAL))
+                end = nodeGrid[x][y]
+            elif grid[x][y] == ".":
+                nodeGrid[x].append(Node(-10, Coordinate(x, y), NodeType.EDGE_NODE))
+            else:
+                nodeGrid[x].append(Node(-10, Coordinate(x, y), NodeType.WALL))
 
             #Process node
-            if nodeGrid[x][y].type == NodeType.EDGE_NODE:
+            if nodeGrid[x][y].type != NodeType.WALL:
                 #Check up
-                if y - 1 > 0:
-                    if grid[y - 1][x] == " ":
-                        nodeGrid[y][x].adjacents.append(Coordinate(x, y - 1))
+                if y - 1 >= 0:
+                    if grid[x][y - 1] != "#":
+                        nodeGrid[x][y].adjacents.append(Coordinate(x, y - 1))
                 
                 #Check down
                 if y + 1 < n:
-                    if grid[y + 1][x] == " ":
-                        nodeGrid[y][x].adjacents.append(Coordinate(x, y + 1))
+                    if grid[x][y + 1] != "#":
+                        nodeGrid[x][y].adjacents.append(Coordinate(x, y + 1))
 
                 #Check left
-                if x - 1 > 0:
-                    if grid[y][x - 1] == " ":
-                        nodeGrid[y][x].adjacents.append(Coordinate(x - 1, y))
+                if x - 1 >= 0:
+                    if grid[x - 1][y] != "#":
+                        nodeGrid[x][y].adjacents.append(Coordinate(x - 1, y))
                 
                 #Check down
                 if x + 1 < n:
-                    if grid[y][x + 1] == " ":
-                        nodeGrid[y][x].adjacents.append(Coordinate(x + 1, y))
+                    if grid[x + 1][y] != "#":
+                        nodeGrid[x][y].adjacents.append(Coordinate(x + 1, y))
                 
-                if nodeGrid[y][x].adjacents.count == 1 or nodeGrid[y][x].adjacents.count > 2:
-                    nodeGrid[y][x].id = currId
-                    nodeGrid[y][x].type = NodeType.JUNCTION
-                    junctionList.append(nodeGrid[y][x])
+                if len(nodeGrid[x][y].adjacents) == 1 or len(nodeGrid[x][y].adjacents) > 2 or nodeGrid[x][y].type == NodeType.START or nodeGrid[x][y].type == NodeType.TERMINAL:
+                    nodeGrid[x][y].id = currId
+
+                    if nodeGrid[x][y].type == NodeType.EDGE_NODE:
+                        nodeGrid[x][y].type = NodeType.JUNCTION
+
+                    junctionList.append(nodeGrid[x][y])
                     currId += 1
-    
+
     edges = defineEdges(junctionList, nodeGrid)
 
     g = Graph(edges, junctionList, start, end)
