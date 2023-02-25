@@ -162,7 +162,7 @@ if __name__ == '__main__':
         print ("Do A* w/ Manhattan Distance Heuristic")
         visited, aPath, s, g, succ, actualC, totalC = astar (grid, n)
         
-        speed = n / (n * 1000 * len(str(n)))
+        speed = n / (n * 10 * len(str(n)))
         
         for i in visited:
             if i != s and i != g:
