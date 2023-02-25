@@ -255,7 +255,7 @@ if __name__ == '__main__':
     # Storing the GRID and the dimensions
     # @ grid is for representation of the maze
     # @ n is the dimension of one side of mat
-    grid, n = fileHandler.load_file("Test Cases/64x64.txt")
+    grid, n = fileHandler.load_file("Test Cases/anime.txt")
 
     # @ tileSize    -> the size of each tile
     # @ dims        -> the length of a window side (1:1 aspect ratio)
