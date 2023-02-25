@@ -2,34 +2,17 @@ from enum import Enum
 import math
 
 class Graph:
-    def __init__ (self, val, start, end):
-        self.data = val
+    def __init__ (self, edges, vertexSet, start, end):
+        #set of all edges
+        self.edges = edges
         #dict where the key is the Node and the value is the heuristic score
-        self.vertices = {}
+        self.vertices = dict()
         #set of vertices
-        self.vertexSet = {}
+        self.vertexSet = vertexSet
         #starting node
         self.start = start
         #ending node
         self.end = end
-    
-    def add_vertex (self, v):
-        if isinstance(v, Node) and v.data not in self.vertices:
-            self.vertices[v.data] = v
-            return True
-        else:
-            return False
-            
-    def add_edge (self, u, v):
-        if u in self.vertices and v in self.vertices:
-            for k, v in self.vertices.items():
-                if k == u:
-                    v.add_connection (v)
-                if k == v:
-                    v.add_connection (u)
-            return True
-        else:
-            return False
             
     def print_graph (self):
         for k in sorted(list(self.vertices.keys())):
