@@ -191,23 +191,23 @@ def astar (grid, n):
                     pq.enqueue ((temp_f_cost, heuristic (child, goal) + heuristic_two (child, goal), child))
                     visited[child] = current_cell
     
-    # declare the optimal path (aPath)
+    # declare the optimal path (actual)
     #
     # head acts like a pointer in the visited list 
     # success tells us if we reached the goal
-    aPath = dict()
+    actual = dict()
     head, success = goal, True
     
     # add the goal to the optimal path
-    aPath[goal] = goal
+    actual[goal] = goal
     
     
-    # find the path from S to G, then store it in aPath
+    # find the path from S to G, then store it in actual
     while head != start:
         """
         NOTES:  How does this work?
         
-        It lies in understanding the structure of aPath and visited.
+        It lies in understanding the structure of actual and visited.
         The pointer HEAD starts at the goal.
         
         
@@ -217,8 +217,8 @@ def astar (grid, n):
                         
             For each key, its value will be the node that you are supposed to be going to.
             
-            We are putting the node we are going into as the key for aPath.
-            The effect of this is that aPath is in reverse, but no worries we can just
+            We are putting the node we are going into as the key for actual path.
+            The effect of this is that actual path is in reverse, but no worries we can just
             reverse () in the GFX process.
             
             Example:
@@ -240,16 +240,16 @@ def astar (grid, n):
         It is a bit hard to explain... but good luck trying to trace!
         """
         try:
-            aPath[visited[head]] = head
+            actual[visited[head]] = head
             head = visited[head]
             
         except KeyError:
             success = False
-            del aPath[goal]
+            del actual[goal]
             break
         
     
-    return visited, aPath, start, goal, success, f_cost
+    return visited, actual, start, goal, success, f_cost
     
 if __name__ == '__main__':
     # Storing the GRID and the dimensions
@@ -286,17 +286,17 @@ if __name__ == '__main__':
         :return:            None
         :rtype:             void
         """
-        visited, aPath = dict (), dict ()
+        visited, actPath = dict (), dict ()
         
         print ("Do A* w/ Manhattan and Euclidean Distance Heuristic")
         
-        # @visited, aPath are the path node tables
+        # @visited, actPath are the path node tables
         # @start, goal is just the beginning nodes and end nodes
         # @succ tells us if it has found a path or not
         # @totalC is the list of total costs for each node in the graph
         # 
         # all obtained from the astar() function
-        visited, aPath, start, goal, succ, totalC = astar (grid, n)
+        visited, actPath, start, goal, succ, totalC = astar (grid, n)
         
 
         # Declare speed based on the size of the grid and the number of digits
@@ -310,7 +310,7 @@ if __name__ == '__main__':
                 gfx.canvas.create_text (node[1] * tileSize + tileSize // 2, node[0] * tileSize + tileSize // 2, text=f"{totalC[node]}", font=('Impact', -tileSize + 5), fill="white")
 
         # likewise for the optimal path
-        for node in reversed (aPath):
+        for node in reversed (actPath):
             if node != start and node != goal:
                 time.sleep (speed)
                 gfx.drawTile (node[0], node[1], "green")
@@ -318,7 +318,7 @@ if __name__ == '__main__':
         
         # show feedback: path found? visited nodes? optimal path count?
         succ = "Path found!" if succ else "Cannot reach goal!"
-        message = f"Nodes Visited: {len (visited) + 1}\nOptimal Path: {len (aPath)}"
+        message = f"Nodes Visited: {len (visited) + 1}\nOptimal Path: {len (actPath)}"
         tkinter.messagebox.showinfo (succ, message)
         
         myLabel = Label(root, text = message, font=('Impact', -13))
