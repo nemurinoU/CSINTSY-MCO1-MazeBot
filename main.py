@@ -255,7 +255,7 @@ if __name__ == '__main__':
     # Storing the GRID and the dimensions
     # @ grid is for representation of the maze
     # @ n is the dimension of one side of mat
-    grid, n = fileHandler.load_file("Test Cases/anime.txt")
+    grid, n = fileHandler.load_file("Test Cases/10x10.txt")
 
     # @ tileSize    -> the size of each tile
     # @ dims        -> the length of a window side (1:1 aspect ratio)
@@ -301,6 +301,23 @@ if __name__ == '__main__':
 
         # Declare speed based on the size of the grid and the number of digits
         speed = n / (n * 20 * len(str(n)))
+        
+        # Wait for user to initiate the search
+        try:
+            box = tkinter.messagebox.showinfo ("Calling User", "Start Search?")
+            root.wait_window(box)
+        except Exception as e:
+            """
+            There is a 2nd optional parameter in the wait_window () method for the tkinter library.
+            And for whatever dumb reason, it's throwing an attribute error? I've been reading so
+            many documentation and scoured Stack Overflow to no avail.
+            
+            If I had to make aneducated guess is that this part of the tkinter 
+            library does not work well with Python 3.10.x
+            
+            But I have to do it if I want to wait for user confirmation.
+            """
+            pass
         
         # this paints the visited nodes onto the canvas
         for node in visited:
