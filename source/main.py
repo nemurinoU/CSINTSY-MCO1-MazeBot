@@ -255,7 +255,7 @@ if __name__ == '__main__':
     # Storing the GRID and the dimensions
     # @ grid is for representation of the maze
     # @ n is the dimension of one side of mat
-    grid, n = fileHandler.load_file("Test Cases/10x10.txt")
+    grid, n = fileHandler.load_file("../source/Test Cases/maze.txt")
 
     # @ tileSize    -> the size of each tile
     # @ dims        -> the length of a window side (1:1 aspect ratio)
@@ -300,7 +300,7 @@ if __name__ == '__main__':
         
 
         # Declare speed based on the size of the grid and the number of digits
-        speed = n / (n * 20 * len(str(n)))
+        speed = n / (n * 10 * len(str(n)))
         
         # Wait for user to initiate the search
         try:
