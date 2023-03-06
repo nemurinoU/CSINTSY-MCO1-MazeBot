@@ -335,7 +335,7 @@ if __name__ == '__main__':
         
         # show feedback: path found? visited nodes? optimal path count?
         succ = "Path found!" if succ else "Cannot reach goal!"
-        message = f"Nodes Visited: {len (visited) + 1}\nOptimal Path: {len (actPath)}"
+        message = f"Nodes Visited: {len (visited) + 1}\nActual Path: {len (actPath)}"
         tkinter.messagebox.showinfo (succ, message)
         
         myLabel = Label(root, text = message, font=('Impact', -13))
